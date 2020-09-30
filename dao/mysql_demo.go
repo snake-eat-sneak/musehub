@@ -9,12 +9,12 @@ import (
 
 //数据库连接信息
 const (
-	USERNAME = "zyz"
-	PASSWORD = "mysql"
+	USERNAME = "username"
+	PASSWORD = "password"
 	NETWORK  = "tcp"
 	SERVER   = "192.168.31.248"
 	PORT     = 3306
-	DATABASE = "赛赛的库"
+	DATABASE = "test"
 )
 
 //user表结构体定义

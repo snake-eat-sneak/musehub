@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"gateway/example"
+	"gateway/helper"
 	"github.com/gin-gonic/gin"
 	"github.com/micro/go-micro/registry"
 	"github.com/micro/go-micro/web"
@@ -23,10 +24,14 @@ func main() {
 		fmt.Println("news========")
 		context.String(200, "news api")
 	})
-	v1Group.Handle("GET", "/example", func(context *gin.Context) {
-		res := example.GetExampleContent()
+	v1Group.Handle("POST", "/example", func(context *gin.Context) {
 
-		fmt.Println("res========", res)
+		var pr helper.GatewayRequest
+		err := context.Bind(&pr)
+		if err != nil{
+			pr = helper.GatewayRequest{Name:"null"}
+		}
+		res := gin.H{"data": example.GetExampleContent(pr.Name)}
 		context.JSON(200, res)
 	})
 

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package go.micro.srv.user;
+
+import "models.proto";
+
+service UserServiceSrv {
+	rpc UserLogin(UserLoginRequest) returns (UserLoginResponse);
+}
+
+message UserLoginRequest {
+    string user_id = 1;
+    string password = 2;
+}
+
+message UserLoginResponse {
+    int32 code = 1;
+    repeated User user = 2;
+}

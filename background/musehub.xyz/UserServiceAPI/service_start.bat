@@ -1,5 +1,5 @@
 @echo off
 
-start "" go run UserServiceAPI --server_address :8200
+go run UserServiceAPI --registry=etcd --registry_address=127.0.0.1:2379
 
 pause

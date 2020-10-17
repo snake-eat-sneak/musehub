@@ -2,19 +2,17 @@ package main
 
 import (
 	"github.com/micro/go-micro"
-	"github.com/micro/go-micro/registry"
-	"github.com/micro/go-plugins/registry/consul"
 	"log"
 
 	proto "UserServiceAPI/proto"
-	user "musehub.xyz/UserServiceSrv/proto"
+	user "musehub.xyz/UserServiceSRV/proto"
 	//"github.com/micro/go-micro/v2"
 
 	"context"
 )
 
 type User struct {
-	Client user.UserServiceSrvService
+	Client user.UserService
 }
 
 func (u *User) UserLogin(ctx context.Context, req *proto.UserLoginRequest, rsp *proto.UserLoginResponse) error {
@@ -27,24 +25,22 @@ func (u *User) UserLogin(ctx context.Context, req *proto.UserLoginRequest, rsp *
 	}
 
 	// set api response
-	ResUser := make([]*proto.User, 0, 1)
-	if len(response.User) > 0{
-		userInfo := *response.User[0]
-		ResUser = append(ResUser, &proto.User{UserId: userInfo.UserId, Password: userInfo.Password, Name:userInfo.Name})
+	ResUser := make([]*proto.UserInfo, 0, 1)
+	if len(response.UserInfo) > 0{
+		userInfo := *response.UserInfo[0]
+		ResUser = append(ResUser, &proto.UserInfo{UserId: userInfo.UserId, Password: userInfo.Password, Name:userInfo.Name})
 	}
-	rsp.User = ResUser
+	rsp.UserInfo = ResUser
 	rsp.Code = response.Code
 	return nil
 }
 
 func main() {
 	// Create service
-	consulReg := consul.NewRegistry(
-		registry.Addrs("127.0.0.1:8500"),
-	)
+	//etcdReg := etcd.NewRegistry(registry.Addrs("127.0.0.1:2379"))
 	service := micro.NewService(
 		micro.Name("api.musehub.xyz.user"),
-		micro.Registry(consulReg),
+		//micro.Registry(etcdReg),
 		micro.Address(":8021"),
 	)
 
@@ -52,14 +48,14 @@ func main() {
 	service.Init()
 
 	// Register Handlers
-	proto.RegisterUserServiceAPIHandler(service.Server(), &User{
-		Client: user.NewUserServiceSrvService("go.micro.srv.user", service.Client()),
+	proto.RegisterUserHandler(service.Server(), &User{
+		Client: user.NewUserService("srv.musehub.xyz.user", service.Client()),
 	})
 
 	// for handler use
-
 	// Run server
 	if err := service.Run(); err != nil {
 		log.Fatal(err)
 	}
+
 }

@@ -3,7 +3,7 @@ package go.micro.api.user;
 
 import "models.proto";
 
-service UserServiceAPI {
+service User {
 	rpc UserLogin(UserLoginRequest) returns (UserLoginResponse);
 }
 
@@ -14,6 +14,6 @@ message UserLoginRequest {
 
 message UserLoginResponse {
     int32 code = 1;
-    repeated User user = 2;
+    repeated UserInfo user_info = 2;
 }
 

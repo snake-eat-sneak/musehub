@@ -23,7 +23,7 @@ func main() {
 	//etcdReg := etcd.NewRegistry(registry.Addrs("127.0.0.1:2379"))
 	service := micro.NewService(
 		micro.Name("srv.musehub.xyz.user"),
-		micro.Address(":8011"),
+		//micro.Address(":8011"),
 		//micro.Registry(etcdReg),
 	)
 

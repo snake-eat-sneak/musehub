@@ -2,7 +2,10 @@ syntax = "proto3";
 package go.micro.api.user;
 
 message UserInfo {
+    // @inject_tag: json:"user_id",form:"user_id"
     string user_id = 1;
+    // @inject_tag: json:"password",form:"password"
     string password = 2;
+    // @inject_tag: json:"name",form:"name"
     string name = 3;
 }

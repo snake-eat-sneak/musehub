@@ -7,6 +7,8 @@ gen.bat生成protobuf接口，在执行之前需要下载安装protoc：
 go get -u github.com/golang/protobuf/protoc-gen-go
 3.安装protoc-gen-micro
 go get github.com/micro/protoc-gen-micro
+4.安装注入标签工具
+go get github.com/favadi/protoc-go-inject-tag
 
 service_start.bat启动服务
 

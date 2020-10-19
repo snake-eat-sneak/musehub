@@ -1,4 +1,4 @@
 服务注册中心
 
 将etcd.exe和etcdctl.exe移至本目录下
-在本目录下执行etcd_start.bat启动网关
+在本目录下执行etcd_start.bat启动服务中心

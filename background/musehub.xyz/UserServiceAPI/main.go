@@ -2,10 +2,11 @@ package main
 
 import (
 	"github.com/micro/go-micro"
+	"github.com/micro/go-micro/registry/etcd"
 	"log"
 
-	proto "UserServiceAPI/proto"
-	user "musehub.xyz/UserServiceSRV/proto"
+	api "musehub.xyz/proto/api"
+	user "musehub.xyz/proto/srv"
 	//"github.com/micro/go-micro/v2"
 
 	"context"
@@ -15,8 +16,10 @@ type User struct {
 	Client user.UserService
 }
 
-func (u *User) UserLogin(ctx context.Context, req *proto.UserLoginRequest, rsp *proto.UserLoginResponse) error {
+func (u *User) UserLogin(ctx context.Context, req *api.UserLoginRequest, rsp *api.UserLoginResponse) error {
 	log.Print("Received User.UserLogin API request")
+
+	etcd.NewRegistry()
 
 	// make the request
 	response, err := u.Client.UserLogin(ctx, &user.UserLoginRequest{UserId: req.UserId, Password:req.Password})
@@ -25,10 +28,10 @@ func (u *User) UserLogin(ctx context.Context, req *proto.UserLoginRequest, rsp *
 	}
 
 	// set api response
-	ResUser := make([]*proto.UserInfo, 0, 1)
+	ResUser := make([]*api.UserInfo, 0, 1)
 	if len(response.UserInfo) > 0{
 		userInfo := *response.UserInfo[0]
-		ResUser = append(ResUser, &proto.UserInfo{UserId: userInfo.UserId, Password: userInfo.Password, Name:userInfo.Name})
+		ResUser = append(ResUser, &api.UserInfo{UserId: userInfo.UserId, Password: userInfo.Password, Name:userInfo.Name})
 	}
 	rsp.UserInfo = ResUser
 	rsp.Code = response.Code
@@ -48,7 +51,7 @@ func main() {
 	service.Init()
 
 	// Register Handlers
-	proto.RegisterUserHandler(service.Server(), &User{
+	api.RegisterUserHandler(service.Server(), &User{
 		Client: user.NewUserService("srv.musehub.xyz.user", service.Client()),
 	})
 

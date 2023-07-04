@@ -1,0 +1,2 @@
+运行脚本
+localhost:8082 可查看etcd状态

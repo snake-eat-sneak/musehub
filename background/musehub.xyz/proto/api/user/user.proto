@@ -1,0 +1,21 @@
+syntax = "proto3";
+package go.micro.api.user;
+
+import "models.proto";
+
+service User {
+	rpc UserLogin(UserLoginRequest) returns (UserLoginResponse);
+}
+
+message UserLoginRequest {
+    // @inject_tag: json:"user_id",form:"user_id"
+    string user_id = 1;
+    // @inject_tag: json:"password",form:"password"
+    string password = 2;
+}
+
+message UserLoginResponse {
+    int32 code = 1;
+    repeated UserInfo user_info = 2;
+}
+
